@@ -20,35 +20,30 @@ class RegistroController extends Controller
 
     public function registrar(Request $request)
     {
-    	try {
-    		$this->validate($request, [
-	    		'name' => 'required',
-	    		'email' => 'required|email|unique:users,email',
-	    		'password' => 'required|min:6|confirmed'
-	    	]);
+		$this->validate($request, [
+    		'name' => 'required',
+    		'email' => 'required|email|unique:users,email',
+    		'password' => 'required|min:6|confirmed'
+    	]);
 
-	    	$dados = $request->all();
-	    	$dados['password'] = Hash::make($dados['password']);
+    	$dados = $request->all();
+    	$dados['password'] = Hash::make($dados['password']);
 
-	    	$usuario = User::create($dados);
+    	$usuario = User::create($dados);
 
-	    	$parametros = [
-		        'grant_type' => 'password',
-		        'client_id' => $this->cliente->id,
-		        'client_secret' => $this->cliente->secret,
-		        'username' => request('email'), //$usuario->email,
-		        'password' => request('password'),
-		        'scope' => '*',
-		    ];
+    	$parametros = [
+	        'grant_type' => 'password',
+	        'client_id' => $this->cliente->id,
+	        'client_secret' => $this->cliente->secret,
+	        'username' => request('email'), //$usuario->email,
+	        'password' => request('password'),
+	        'scope' => '*',
+	    ];
 
-		    $request->request->add($parametros);
+	    $request->request->add($parametros);
 
-		    $proxy = Request::create('oauth/token', 'POST');
+	    $proxy = Request::create('oauth/token', 'POST');
 
-		    return Route::dispatch($proxy);
-    	}
-    	catch(\Throwable $erro) {
-    		return response()->json(['error' => $erro->getMessage()]);
-    	}
+	    return Route::dispatch($proxy);
     }
 }
