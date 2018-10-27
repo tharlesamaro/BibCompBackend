@@ -15,6 +15,8 @@ use Illuminate\Http\Request;
 
 Route::post('registrar', 'Api\Auth\RegistroController@registrar');
 Route::post('login', 'Api\Auth\LoginController@login');
+Route::post('refresh', 'Api\Auth\LoginController@refresh');
+
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     dd('logado!');
