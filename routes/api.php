@@ -18,6 +18,6 @@ Route::post('login', 'Api\Auth\LoginController@login');
 Route::post('refresh', 'Api\Auth\LoginController@refresh');
 
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    dd('logado!');
+Route::middleware('auth:api')->group(function () {
+    Route::post('logout', 'Api\Auth\LoginController@logout');
 });

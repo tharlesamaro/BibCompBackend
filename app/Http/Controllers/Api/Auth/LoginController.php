@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Laravel\Passport\Client;
 
@@ -66,7 +67,7 @@ class LoginController extends Controller
     {
     	$tokenUsuarioLogado = Auth::user()->token();
 
-    	DB::table('oauht_refresh_token')
+    	DB::table('oauth_refresh_token')
     		->where('access_token_id', $tokenUsuarioLogado->id)
     		->update(['revoked' => true]);
 
